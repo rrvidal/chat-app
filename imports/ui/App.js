@@ -16,7 +16,6 @@ class App extends Component {
 
         this.state = {
             chatId: null,
-            messages: [],
         }
         this.sendMessage = this.sendMessage.bind(this);
         this.createChat = this.createChat.bind(this);
@@ -24,19 +23,15 @@ class App extends Component {
         this.deleteChat = this.deleteChat.bind(this);
     }     
     
-    enterChat(chatId) {
-      const chat = this.props.chats.find(chat => chat._id === chatId)
+    enterChat(chatId) {   
       this.setState({ 
-        messages: chat.messages ,
         chatId
       })        
     }
     
     sendMessage(text) {
       Meteor.call('chats.pushMessage', this.state.chatId, text);    
-      this.setState({
-        messages: [...this.state.messages , {name:this.props.userName, text}]
-      })
+      
       let body = $(".message-list");console.log(body[0].scrollTop);
       
       body.stop().animate({scrollTop:body[0].scrollTop+450}, 750, 'swing')
@@ -60,6 +55,7 @@ class App extends Component {
               { this.props.userName ?
                 <MessageList 
                   chatId={this.state.chatId}
+                  chats={[...this.props.chats]}
                   messages={this.state.messages} />: 
                 <AccountsUIWrapper />
               }

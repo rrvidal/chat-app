@@ -17,7 +17,8 @@ class MessageList extends React.Component {
     }
     
     render() {
-        if (!this.props.chatId) {
+        const chatId = this.props.chatId;
+        if (!chatId) {
             return (
                 <div className="message-list">
                     <div className="join-chat">
@@ -26,10 +27,11 @@ class MessageList extends React.Component {
                 </div>
             )
         }
+        const chat = this.props.chats.find(chat => chat._id === chatId)
         return (
             <div className="message-list">        
                 <div className="fadedScroller"></div>        
-                {this.props.messages.map((message, index) => {
+                {chat.messages.map((message, index) => {
                     return (
                         <Message key={index} name={message.name} text={message.text} />
                     )
